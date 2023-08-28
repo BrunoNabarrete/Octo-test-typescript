@@ -102,8 +102,8 @@ export default function SearchAddress() {
         </div>
       </div>
       {selectedAddress && (
-        <div className="border-t mt-4 pt-4">
-          <h3 className="text-lg font-semibold mb-2">Endereço Selecionado:</h3>
+        <div className="border-t text-black mt-4 pt-4">
+          <h3 className="text-lg font-semibold text-black mb-2">Endereço Selecionado:</h3>
           <p>CEP: {selectedAddress.cep}</p>
           <p>Logradouro: {selectedAddress.logradouro}</p>
           <p>Bairro: {selectedAddress.bairro}</p>
