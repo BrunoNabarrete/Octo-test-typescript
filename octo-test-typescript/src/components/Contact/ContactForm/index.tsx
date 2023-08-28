@@ -6,6 +6,7 @@ export default function ContactForm() {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [details, setDetails] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   function validateEmail(email: string) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,6 +16,13 @@ export default function ContactForm() {
   function validatePhoneNumber(phoneNumber: string) {
     const cleanedPhoneNumber = phoneNumber.replace(/\D/g, "");
     return cleanedPhoneNumber.length === 11;
+  }
+
+  function validatePDF(file: File | null) {
+    if (file) {
+      return file.type === "application/pdf";
+    }
+    return false;
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -30,12 +38,18 @@ export default function ContactForm() {
       return;
     }
 
+    if (!validatePDF(selectedFile)) {
+      alert("Invalid file format. Please select a PDF file.");
+      return;
+    }
+
     const formData = {
       firstName,
       lastName,
       email,
       phoneNumber,
       details,
+      file: selectedFile,
     };
 
     console.log(formData);
@@ -45,6 +59,7 @@ export default function ContactForm() {
     setFirstName("");
     setLastName("");
     setPhoneNumber("");
+    setSelectedFile(null);
 
     window.location.href = "/forms";
   }
@@ -142,7 +157,6 @@ export default function ContactForm() {
               <svg
                 className="w-8 h-8 mb-4 text-gray-500 0"
                 aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 20 16"
               >
@@ -159,13 +173,15 @@ export default function ContactForm() {
                 arraste o arquivo
               </p>
               <p className="text-xs text-gray-500 ">
-                SVG, PNG, JPG or GIF (MAX. 800x400px)
+                PDF (MAX. 4MB)
               </p>
             </div>
             <input
               id="dropzone-file"
               type="file"
+              accept=".pdf"
               className="hidden"
+              onChange={(e) => setSelectedFile(e.target.files && e.target.files[0])}
             />
           </label>
         </div>
