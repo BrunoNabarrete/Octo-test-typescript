@@ -31,12 +31,13 @@ export default function SearchAddress() {
 
     try {
       const formattedStreetName = streetName.replace(/\s/g, '-');
-      const response = await axios.get(`http://cep.la/${encodeURIComponent(formattedStreetName)}`, {
+      const response = await fetch(`http://cep.la/${encodeURIComponent(formattedStreetName)}`, {
         headers: {
           "Accept": "application/json"
         }
       });
-      setAddressOptions(response.data);
+      const responseData = await response.json();
+      setAddressOptions(responseData);
     } catch (error) {
       console.error(`Erro ao obter opções para o nome da rua:`, error);
     }
